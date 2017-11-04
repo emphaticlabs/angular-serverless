@@ -1,0 +1,17 @@
+.container {
+  display: flex;
+
+}
+.icono {
+  width: 100px;
+  //border-radius: 50%;
+  img {
+    max-width: 100%;
+  }
+}
+.spacer {
+  flex: 1 1 auto;
+}
+.space100 {
+  height: 100vh;
+}
