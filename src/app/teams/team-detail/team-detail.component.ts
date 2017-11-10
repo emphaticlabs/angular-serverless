@@ -1,12 +1,22 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap, Params } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
-import { Fixture, LigaTeam, TeamFixtures } from '../../interfaces/table.interface';
+import {
+  Fixture,
+  LigaTeam,
+  TeamFixtures
+} from '../../interfaces/table.interface';
 import { LigaService } from '../../tabla.service';
-import 'rxjs/add/operator/map';
-import 'rxjs/add/operator/do';
-import 'rxjs/add/operator/switchMap';
 import { FixtureDatasource } from './fixture.datasource';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/switchMap';
+import { registerLocaleData } from '@angular/common';
+import localeEsGT from '@angular/common/locales/es-GT';
+
+// register locale
+
+registerLocaleData(localeEsGT);
 
 @Component({
   selector: 'liga-team-detail',
@@ -14,27 +24,53 @@ import { FixtureDatasource } from './fixture.datasource';
   styleUrls: ['./team-detail.component.scss']
 })
 export class TeamDetailComponent implements OnInit {
-  ligaTeam$: Observable<LigaTeam>;
+  private _ligaTeamSubject$: BehaviorSubject<LigaTeam | null> = new BehaviorSubject<LigaTeam | null>(
+    null
+  );
+  ligaTeam$: Observable<LigaTeam | null> = this._ligaTeamSubject$.asObservable();
   teamFixtures$: Observable<TeamFixtures>;
   teamFixtureArr: Observable<Fixture[]>;
   dataSource: FixtureDatasource | null;
-  displayedColumns = ['jornada', 'columna'];
+  displayedColumns = ['jornada', 'columna', 'versus'];
 
-  constructor(private route: ActivatedRoute, private ligaService: LigaService) {}
+  constructor(
+    private route: ActivatedRoute,
+    private ligaService: LigaService
+  ) {}
 
   ngOnInit(): void {
-    this.ligaTeam$ = this.route.paramMap.switchMap((params: ParamMap) =>
-      this.ligaService.getTeamById(params.get('id'))
-    );
-    // this.teamFixtures$ = this.route.paramMap.switchMap((params: ParamMap) =>
-    //   this.ligaService.getFixturesByTeamId(params.get('id'))
-    // );
-    this.route.paramMap.switchMap((params: ParamMap) =>
-      this.ligaService.getFixturesByTeamId(params.get('id'))
-    ).subscribe(() => {
-      this.dataSource = new FixtureDatasource(this.ligaService._fixturesFilterSubject$) || null;
-    });
-    // this.dataSource = new FixtureDatasource(this.teamFixtures$) || null;
-    // this.dataSource = new FixtureDatasource(this.teamFixtures$) || null;
+    this.route.paramMap
+      .switchMap((params: ParamMap) =>
+        this.ligaService.getTeamById(params.get('id'))
+      )
+      .subscribe(
+        data => this._ligaTeamSubject$.next(data),
+        err => {
+          this._ligaTeamSubject$.next(null);
+          console.log('error: ', err.message);
+        }
+      );
+    this.route.paramMap
+      .switchMap((params: ParamMap) =>
+        this.ligaService.getFixturesByTeamId(params.get('id'))
+      )
+      .subscribe(data => {
+        this.dataSource =
+          new FixtureDatasource(this.ligaService._fixturesFilterSubject$) ||
+          null;
+        this.ligaService._fixturesFilterSubject$.subscribe(data =>
+          console.log('fixtures-filter', data)
+        );
+      });
+  }
+
+  getVsTeam(row: Fixture) {
+    const output = { vsTeam: '', asHome: false };
+    const teamName = this._ligaTeamSubject$.getValue().name;
+    const homeTeamName = row.homeTeamName;
+    const awayTeamName = row.awayTeamName;
+    output.asHome = teamName === homeTeamName;
+    output.vsTeam = output.asHome ? awayTeamName : '@ ' + homeTeamName;
+    return output.vsTeam;
   }
 }

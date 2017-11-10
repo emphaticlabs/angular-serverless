@@ -1,6 +1,6 @@
 import { DataSource } from '@angular/cdk/collections';
 import { Observable } from 'rxjs/Observable';
-import { Fixture, TeamFixtures } from '../../interfaces/table.interface';
+import { Fixture } from '../../interfaces/table.interface';
 import 'rxjs/add/operator/map';
 
 export class FixtureDatasource extends DataSource<any> {
@@ -8,7 +8,6 @@ export class FixtureDatasource extends DataSource<any> {
     super();
   }
   connect(): Observable<Fixture[]> {
-    // return this.teamFixtures$.map((tf, i) => tf.fixtures);
     return this.teamFixtures$;
   }
   disconnect() {}
