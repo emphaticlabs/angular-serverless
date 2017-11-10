@@ -1,3 +1,61 @@
-<pre>
-  {{ (laLigaTableData | async) | json }}
-</pre>
+<div class="example-container mat-elevation-z8">
+  <!-- Table -->
+  <mat-table #table [dataSource]="dataSource">
+    <!-- position --->
+    <ng-container matColumnDef="position">
+      <mat-header-cell class="five" *matHeaderCellDef>#</mat-header-cell>
+      <mat-cell class="five" *matCellDef="let row">
+        {{row?.position}}
+      </mat-cell>
+    </ng-container>
+    <!-- club --->
+    <ng-container matColumnDef="club">
+      <mat-header-cell *matHeaderCellDef>Club</mat-header-cell>
+      <mat-cell *matCellDef="let row">
+        <a routerLink={{getTeamId(row._links.team.href)}}>
+          <img [src]="row?.crestURI" width="20">
+          {{row?.teamName}}
+        </a>
+      </mat-cell>
+    </ng-container>
+    <!-- played games --->
+    <ng-container matColumnDef="playedGames">
+      <mat-header-cell class="five" *matHeaderCellDef>JJ</mat-header-cell>
+      <mat-cell class="five" *matCellDef="let row">
+        {{row?.playedGames}}
+      </mat-cell>
+    </ng-container>
+    <!-- games won --->
+    <ng-container matColumnDef="wins">
+      <mat-header-cell class="five" *matHeaderCellDef>JG</mat-header-cell>
+      <mat-cell class="five" *matCellDef="let row">
+        {{row?.wins}}
+      </mat-cell>
+    </ng-container>
+    <!-- games draw --->
+    <ng-container matColumnDef="draws">
+      <mat-header-cell class="five" *matHeaderCellDef>JE</mat-header-cell>
+      <mat-cell class="five" *matCellDef="let row">
+        {{row?.draws}}
+      </mat-cell>
+    </ng-container>
+    <!-- games loss --->
+    <ng-container matColumnDef="losses">
+      <mat-header-cell class="five" *matHeaderCellDef>JP</mat-header-cell>
+      <mat-cell class="five" *matCellDef="let row">
+        {{row?.losses}}
+      </mat-cell>
+    </ng-container>
+    <!-- points --->
+    <ng-container matColumnDef="points">
+      <mat-header-cell class="ten" *matHeaderCellDef>P</mat-header-cell>
+      <mat-cell class="ten" *matCellDef="let row">
+        {{row?.points}}
+      </mat-cell>
+    </ng-container>
+
+    <!-- header row --->
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns:displayedColumns;"></mat-row>
+  </mat-table>
+</div>

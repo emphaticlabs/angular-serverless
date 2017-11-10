@@ -14,11 +14,11 @@ export class LaLigaAuthInterceptor implements HttpInterceptor {
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    request = request.clone({
+    const req = request.clone({
       setHeaders: {
         'X-Auth-Token': `${environment.fbDataKey}`
       }
     });
-    return next.handle(request);
+    return next.handle(req);
   }
 }

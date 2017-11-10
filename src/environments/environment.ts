@@ -6,5 +6,7 @@
 export const environment = {
   production: false,
   fbDataKey: '5aa68225b66a4500ac98207d568b08ec',
-  ligaTableUrl: 'http://api.football-data.org/v1/competitions/455/leagueTable'
+  ligaTableUrl: 'http://api.football-data.org/v1/competitions/455/leagueTable',
+  teamByIdUrl: 'http://api.football-data.org/v1/teams/',
+  getFixturesByIdUrl: 'http://api.football-data.org/v1/teams/',
 };

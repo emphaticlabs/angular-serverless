@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import {LigaTable} from '../interfaces/table.interface';
-import {TableService} from '../tabla.service';
-import {Observable} from 'rxjs/Observable';
+import { LigaService } from '../tabla.service';
+import { TableDataSource } from './tabla-data-source';
 
 @Component({
   selector: 'liga-tabla-pos',
@@ -9,12 +8,22 @@ import {Observable} from 'rxjs/Observable';
   styleUrls: ['./tabla-pos.component.scss']
 })
 export class TablaPosComponent implements OnInit {
-  laLigaTableData: Observable<LigaTable>;
+  displayedColumns = ['position', 'club', 'playedGames', 'wins', 'draws', 'losses', 'points'];
 
-  constructor(private tableService: TableService) { }
+  dataSource: TableDataSource | null;
+
+  constructor(private ligaService: LigaService) {}
 
   ngOnInit() {
-    this.laLigaTableData = this.tableService.getTable();
+    this.dataSource = new TableDataSource(this.ligaService);
   }
 
+  getTeamId(teamHref: string) {
+    const teamId = +teamHref.split('/').pop();
+    if (Number.isInteger(teamId)) {
+      return `/equipo/${teamId}`;
+    } else {
+      return '/';
+    }
+  }
 }

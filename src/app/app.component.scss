@@ -1,17 +1,20 @@
 .container {
-  display: flex;
-
+  display : flex;
 }
 .icono {
-  width: 100px;
+  width : 100px;
   //border-radius: 50%;
   img {
-    max-width: 100%;
+    max-width : 100%;
   }
 }
 .spacer {
-  flex: 1 1 auto;
+  flex : 1 1 auto;
 }
-.space100 {
-  height: 100vh;
+.space100vh {
+  height : 100vh;
+}
+.flex-column {
+  display        : flex;
+  flex-direction : column;
 }
