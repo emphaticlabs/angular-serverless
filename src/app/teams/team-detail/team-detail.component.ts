@@ -31,7 +31,7 @@ export class TeamDetailComponent implements OnInit {
   teamFixtures$: Observable<TeamFixtures>;
   teamFixtureArr: Observable<Fixture[]>;
   dataSource: FixtureDatasource | null;
-  displayedColumns = ['jornada', 'columna', 'versus'];
+  displayedColumns = ['jornada', 'columna', 'versus', 'pronostico'];
 
   constructor(
     private route: ActivatedRoute,
@@ -55,11 +55,8 @@ export class TeamDetailComponent implements OnInit {
         this.ligaService.getFixturesByTeamId(params.get('id'))
       )
       .subscribe(data => {
-        this.dataSource =
-          new FixtureDatasource(this.ligaService._fixturesFilterSubject$) ||
-          null;
-        this.ligaService._fixturesFilterSubject$.subscribe(data =>
-          console.log('fixtures-filter', data)
+        this.dataSource = new FixtureDatasource(
+          this.ligaService._fixturesFilterSubject$
         );
       });
   }
@@ -72,5 +69,8 @@ export class TeamDetailComponent implements OnInit {
     output.asHome = teamName === homeTeamName;
     output.vsTeam = output.asHome ? awayTeamName : '@ ' + homeTeamName;
     return output.vsTeam;
+  }
+  getFixtureId(href: string): string {
+    return href.split('/').pop();
   }
 }

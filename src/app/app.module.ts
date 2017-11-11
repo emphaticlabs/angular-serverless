@@ -9,9 +9,11 @@ import { TablaPosComponent } from './tabla-pos/tabla-pos.component';
 import { LigaService } from './tabla.service';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LaLigaAuthInterceptor } from './interceptors/auth.interceptors';
+import { UserService } from './user.service';
+import { LoginComponent } from './login/login.component';
 
 @NgModule({
-  declarations: [AppComponent, TablaPosComponent],
+  declarations: [AppComponent, TablaPosComponent, LoginComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -21,10 +23,11 @@ import { LaLigaAuthInterceptor } from './interceptors/auth.interceptors';
   ],
   providers: [
     LigaService,
+    UserService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LaLigaAuthInterceptor,
-      multi: true
+      multi: true,
     }
   ],
   bootstrap: [AppComponent]

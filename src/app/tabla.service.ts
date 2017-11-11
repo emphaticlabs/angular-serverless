@@ -1,7 +1,12 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../environments/environment';
-import { Fixture, LigaTable, LigaTeam, TeamFixtures } from './interfaces/table.interface';
+import {
+  Fixture,
+  LigaTable,
+  LigaTeam,
+  TeamFixtures
+} from './interfaces/table.interface';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/shareReplay';
 import 'rxjs/add/operator/switchMap';
@@ -14,12 +19,18 @@ export class LigaService {
   ligaTableUrl: string;
   teamByIdUrl: string;
   getFixturesByIdUrl: string;
-  _tableDataSubject$: BehaviorSubject<LigaTable | null> = new BehaviorSubject<LigaTable>(null);
+  _tableDataSubject$: BehaviorSubject<LigaTable | null> = new BehaviorSubject<
+    LigaTable
+  >(null);
   TableData$: Observable<LigaTable | null> = this._tableDataSubject$.asObservable();
 
-  _fixturesFilterSubject$: BehaviorSubject<Fixture[] | null> = new BehaviorSubject<Fixture[]>(null);
+  _fixturesFilterSubject$: BehaviorSubject<
+    Fixture[] | null
+  > = new BehaviorSubject<Fixture[]>(null);
 
-  private _loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private _loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject(
+    false
+  );
   loading$ = this._loadingSubject.asObservable();
 
   constructor(private http: HttpClient) {
@@ -31,11 +42,9 @@ export class LigaService {
     this.getLaLigaFixturesByTI('81');
   }
 
-  getTable(): void {
-    this.http
-      .get<LigaTable>(this.ligaTableUrl)
-      .shareReplay()
-      .subscribe(tableData => this._tableDataSubject$.next(tableData));
+  getTable(): Observable<LigaTable> {
+    return this.http.get<LigaTable>(this.ligaTableUrl).shareReplay();
+    // .subscribe(tableData => this._tableDataSubject$.next(tableData));
   }
 
   getTeamById(id: string): Observable<LigaTeam> {
@@ -44,7 +53,9 @@ export class LigaService {
 
   getFixturesByTeamId(id: string) {
     return this.http
-      .get<TeamFixtures>(this.getFixturesByIdUrl + `${id}/fixtures?timeFrame=n30`)
+      .get<TeamFixtures>(
+        this.getFixturesByIdUrl + `${id}/fixtures?timeFrame=n30`
+      )
       .shareReplay();
   }
 

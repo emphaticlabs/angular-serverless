@@ -1,24 +1,26 @@
 import { NgModule } from '@angular/core';
 import {
+  MatButtonModule,
   MatCardModule,
   MatProgressBarModule,
   MatTableModule,
   MatToolbarModule
 } from '@angular/material';
-import { CdkTableModule } from '@angular/cdk/table';
 
 @NgModule({
   imports: [
     MatToolbarModule,
     MatProgressBarModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonModule
   ],
   exports: [
     MatToolbarModule,
     MatProgressBarModule,
     MatCardModule,
-    MatTableModule
+    MatTableModule,
+    MatButtonModule
   ],
   declarations: []
 })

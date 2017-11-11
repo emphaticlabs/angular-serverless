@@ -8,14 +8,25 @@ import { TableDataSource } from './tabla-data-source';
   styleUrls: ['./tabla-pos.component.scss']
 })
 export class TablaPosComponent implements OnInit {
-  displayedColumns = ['position', 'club', 'playedGames', 'wins', 'draws', 'losses', 'points'];
+  displayedColumns = [
+    'position',
+    'club',
+    'playedGames',
+    'wins',
+    'draws',
+    'losses',
+    'points'
+  ];
 
   dataSource: TableDataSource | null;
 
   constructor(private ligaService: LigaService) {}
 
   ngOnInit() {
-    this.dataSource = new TableDataSource(this.ligaService);
+    this.ligaService.getTable().subscribe(tableData => {
+      this.ligaService._tableDataSubject$.next(tableData);
+      this.dataSource = new TableDataSource(this.ligaService);
+    });
   }
 
   getTeamId(teamHref: string) {

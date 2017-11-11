@@ -5,31 +5,38 @@
       <span class="header-pic"> <img [src]="(ligaTeam$ | async)?.crestUrl"></span>
     </div>
   </div>
-  <div class=" table-team-detail mat-elevation-z8">
+  <div class="table-team-detail mat-elevation-z8">
     <!-- Table -->
     <mat-table [dataSource]="dataSource">
       <!-- position --->
       <ng-container matColumnDef="jornada">
-        <mat-header-cell class="five" *matHeaderCellDef>Jornada #</mat-header-cell>
-        <mat-cell class="five" *matCellDef="let row">
+        <mat-header-cell class="ten" *matHeaderCellDef>#</mat-header-cell>
+        <mat-cell class="ten" *matCellDef="let row">
           {{row.matchday}}
         </mat-cell>
       </ng-container>
       <!-- columna --->
       <ng-container matColumnDef="columna">
-        <mat-header-cell class="five" *matHeaderCellDef>col #</mat-header-cell>
-        <mat-cell class="five" *matCellDef="let row">
+        <mat-header-cell *matHeaderCellDef>Fecha</mat-header-cell>
+        <mat-cell *matCellDef="let row">
           {{row.date | date: 'short': '-0600' : 'es-GT'}}
         </mat-cell>
       </ng-container>
       <!-- VS --->
       <ng-container matColumnDef="versus">
-        <mat-header-cell class="five" *matHeaderCellDef>Vs</mat-header-cell>
-        <mat-cell class="five" *matCellDef="let row">
+        <mat-header-cell *matHeaderCellDef>Vs</mat-header-cell>
+        <mat-cell *matCellDef="let row">
           {{getVsTeam(row)}}
         </mat-cell>
       </ng-container>
-
+      <!-- apostar (bet) btn --->
+      <ng-container matColumnDef="pronostico">
+        <mat-header-cell *matHeaderCellDef>Pronostico</mat-header-cell>
+        <mat-cell *matCellDef="let row">
+          <a routerLink="quiniela/{{getFixtureId(row._links.self.href)}}"
+             mat-raised-button>pronostico</a>
+        </mat-cell>
+      </ng-container>
       <!-- header row --->
       <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
       <mat-row *matRowDef="let row; columns:displayedColumns;"></mat-row>

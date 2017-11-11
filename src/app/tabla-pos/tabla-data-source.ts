@@ -9,9 +9,7 @@ export class TableDataSource extends DataSource<any> {
     super();
   }
   connect(): Observable<TableTeam[]> {
-    if (this.tableService._tableDataSubject$.value) {
-      return this.tableService.TableData$.pluck('standing');
-    }
+    return this.tableService._tableDataSubject$.pluck('standing');
   }
   disconnect() {}
 }

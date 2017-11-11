@@ -5,13 +5,23 @@
         <img src="assets/img/laliga-h-negativo-300x300_v2.png">
       </div>
     </a>
+    <div class="botones-login">
+      <a mat-button *ngIf="(isLogin$ | async) === 'LOGOUT'; else registerTmpl"
+         routerLink="/login">Ingresar</a>
+      <a mat-button routerLink="/register">registrarse</a>
+    </div>
     <span class="spacer"></span>
-    <span>La Liga</span>
+    <span>Pronosticos</span>
   </mat-toolbar>
   <router-outlet></router-outlet>
   <div class="spacer"></div>
-  <mat-toolbar color="primary">
-    <span class="spacer"></span>
-    <span class="mat-subheading-2">Demo By Renato Pérez</span>
+  <mat-toolbar class="footer-tool-bar" color="primary">
+    <div class="footer-author">
+      <span class="mat-subheading-2">Demo By Renato Pérez</span>
+      <span class="mat-subheading-2">@renatchenko</span>
+    </div>
   </mat-toolbar>
 </div>
+<ng-template #registerTmpl>
+  <a mat-button (click)="logout()" >Salir</a>
+</ng-template>
