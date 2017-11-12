@@ -7,8 +7,8 @@
     </a>
     <div class="botones-login">
       <a mat-button *ngIf="(isLogin$ | async) === 'LOGOUT'; else registerTmpl"
-         routerLink="/login">Ingresar</a>
-      <a mat-button routerLink="/register">registrarse</a>
+         routerLink="login">Ingresar</a>
+      <a mat-button routerLink="register">registrarse</a>
     </div>
     <span class="spacer"></span>
     <span>Pronosticos</span>

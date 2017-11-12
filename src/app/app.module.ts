@@ -11,6 +11,7 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { LaLigaAuthInterceptor } from './interceptors/auth.interceptors';
 import { UserService } from './user.service';
 import { LoginComponent } from './login/login.component';
+import { ReactiveFormsModule } from '@angular/forms';
 
 @NgModule({
   declarations: [AppComponent, TablaPosComponent, LoginComponent],
@@ -19,7 +20,8 @@ import { LoginComponent } from './login/login.component';
     AppRoutingModule,
     HttpClientModule,
     BrowserAnimationsModule,
-    MaterialComponentsModule
+    MaterialComponentsModule,
+    ReactiveFormsModule
   ],
   providers: [
     LigaService,
@@ -27,8 +29,8 @@ import { LoginComponent } from './login/login.component';
     {
       provide: HTTP_INTERCEPTORS,
       useClass: LaLigaAuthInterceptor,
-      multi: true,
-    }
+      multi: true
+    },
   ],
   bootstrap: [AppComponent]
 })

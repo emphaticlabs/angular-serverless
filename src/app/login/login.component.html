@@ -1,3 +1,32 @@
-<p>
-  login works!
-</p>
+<div class="wrapper">
+  <mat-card>
+    <mat-card-title>
+      <h2>Ingresa tus datos</h2>
+    </mat-card-title>
+    <mat-card-content>
+      <form [formGroup]="loginForm" class="login-form" (submit)="login()" novalidate>
+        <mat-form-field class="full-width-field" floatPlaceholder="auto">
+          <input formControlName="usuario" type="text" matInput placeholder="Email">
+          <mat-error *ngIf="loginForm.controls['usuario'].hasError('pattern')">
+            Por favor ingreso un Email valido
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls['usuario'].hasError('required')">
+            Email es <strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field >
+        <mat-form-field class="full-width-field" floatPlaceholder="auto">
+          <input formControlName="password" type="password" matInput placeholder="Password">
+          <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
+            Password es <strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+      </form>
+    </mat-card-content>
+    <mat-card-actions>
+      <div class="mat-card-actions-btns">
+        <button type="submit" [disabled]="loginForm.invalid" mat-raised-button color="primary">Enviar</button>
+        <button (click)="reset()" mat-raised-button>Reset</button>
+      </div>
+    </mat-card-actions>
+  </mat-card>
+</div>
