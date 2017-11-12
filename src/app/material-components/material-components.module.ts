@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import {
   MatButtonModule,
   MatCardModule,
+  MatIconModule,
   MatInputModule,
   MatProgressBarModule,
   MatTableModule,
@@ -15,7 +16,8 @@ import {
     MatCardModule,
     MatTableModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   exports: [
     MatToolbarModule,
@@ -23,10 +25,10 @@ import {
     MatCardModule,
     MatTableModule,
     MatButtonModule,
-    MatInputModule
+    MatInputModule,
+    MatIconModule
   ],
   declarations: [],
-  providers: [
-  ]
+  providers: []
 })
 export class MaterialComponentsModule {}

@@ -12,9 +12,10 @@ import { LaLigaAuthInterceptor } from './interceptors/auth.interceptors';
 import { UserService } from './user.service';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [AppComponent, TablaPosComponent, LoginComponent],
+  declarations: [AppComponent, TablaPosComponent, LoginComponent, RegisterComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
