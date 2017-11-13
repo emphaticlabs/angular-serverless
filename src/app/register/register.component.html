@@ -1,3 +1,53 @@
-<p>
-  register works!
-</p>
+<div class="wrapper mat-elevation-z8">
+  <mat-card>
+    <form [formGroup]="registerForm" class="login-form" (ngSubmit)="onSubmit()" novalidate>
+      <mat-card-header>
+        <mat-card-title>
+          <h2 class="mat-title">Registrate...</h2>
+        </mat-card-title>
+        <mat-card-subtitle>
+          <a routerLink="/login">Si ya tienes cuenta ingresa aqui
+            <mat-icon style="color: #3f51b5">lock_outline</mat-icon>
+          </a>
+        </mat-card-subtitle>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field class="full-width-field" floatPlaceholder="auto">
+          <input formControlName="username" type="text" matInput placeholder="Email">
+          <mat-error *ngIf="registerForm.controls['username'].hasError('pattern')">
+            Por favor ingreso un Email valido
+          </mat-error>
+          <mat-error *ngIf="registerForm.controls['username'].hasError('required')">
+            Email es <strong>obligatorio</strong>
+          </mat-error>
+        </mat-form-field>
+        <div [formGroupName]="passGroup">
+          <mat-form-field class="full-width-field" floatPlaceholder="auto">
+            <input formControlName="password" type="password" matInput placeholder="Password">
+            <mat-error *ngIf="registerForm.controls['passGroup']['password'].hasError('required')">
+              Password es <strong>obligatorio</strong>
+            </mat-error>
+            <mat-error *ngIf="registerForm.controls['passGroup']['password'].hasError('minLength')">
+              Password deberá tener al menos <strong>8 caracteres</strong>
+            </mat-error>
+          </mat-form-field>
+          <mat-form-field class="full-width-field" floatPlaceholder="auto">
+            <input formControlName="repassword" type="password" matInput placeholder="Reingresa Pass">
+            <mat-error *ngIf="registerForm.controls['passGroup']['repassword'].hasError('required')">
+              Debe <strong>re ingresar</strong> exactamente el mismo password
+            </mat-error>
+            <mat-error *ngIf="registerForm.controls['passGroup'].hasError('equal')">
+              Ambas <strong>passwords deben</strong> ser identicas
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </mat-card-content>
+      <mat-card-actions>
+        <div class="mat-card-actions-btns">
+          <button type="submit" [disabled]="registerForm.invalid" mat-raised-button color="primary">Registrarse</button>
+          <button (click)="reset()" mat-raised-button>Reset</button>
+        </div>
+      </mat-card-actions>
+    </form>
+  </mat-card>
+</div>
