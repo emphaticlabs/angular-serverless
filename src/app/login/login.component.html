@@ -1,6 +1,6 @@
 <div class="wrapper mat-elevation-z8">
   <mat-card>
-    <form [formGroup]="loginForm" class="login-form" (ngSubmit)="login()" novalidate>
+    <form [formGroup]="loginForm" class="card-form" (ngSubmit)="onSubmit()" novalidate>
       <mat-card-header>
         <mat-card-title>
           <h2 class="mat-title">Ingresar...</h2>
@@ -13,11 +13,11 @@
       </mat-card-header>
       <mat-card-content>
         <mat-form-field class="full-width-field" floatPlaceholder="auto">
-          <input formControlName="usuario" type="text" matInput placeholder="Email">
-          <mat-error *ngIf="loginForm.controls['usuario'].hasError('pattern')">
+          <input formControlName="username" type="text" matInput placeholder="Email">
+          <mat-error *ngIf="loginForm.controls['username'].hasError('pattern')">
             Por favor ingreso un Email valido
           </mat-error>
-          <mat-error *ngIf="loginForm.controls['usuario'].hasError('required')">
+          <mat-error *ngIf="loginForm.controls['username'].hasError('required')">
             Email es <strong>obligatorio</strong>
           </mat-error>
         </mat-form-field>
@@ -25,6 +25,9 @@
           <input formControlName="password" type="password" matInput placeholder="Password">
           <mat-error *ngIf="loginForm.controls['password'].hasError('required')">
             Password es <strong>obligatorio</strong>
+          </mat-error>
+          <mat-error *ngIf="loginForm.controls['password'].hasError('minlength')">
+            Password debera tener <strong>minimo 8 caracteres</strong>
           </mat-error>
         </mat-form-field>
       </mat-card-content>

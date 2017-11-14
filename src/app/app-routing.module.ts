@@ -5,10 +5,10 @@ import {LoginComponent} from './login/login.component';
 import {RegisterComponent} from './register/register.component';
 
 const appModuleRoutes: Routes = [
+  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
   { path: 'inicio', component: TablaPosComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registrar', component: RegisterComponent },
-  { path: '', redirectTo: '/inicio', pathMatch: 'full' },
   { path: 'equipo/:id', loadChildren: './teams/teams.module#TeamsModule' },
   { path: '**', redirectTo: '/inicio' }
 ];

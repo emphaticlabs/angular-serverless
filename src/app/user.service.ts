@@ -6,11 +6,17 @@ import { AuthState } from './enums/user.enums';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
 import { User } from './interfaces/user.model';
-import { CognitoUser, CognitoUserPool } from 'amazon-cognito-identity-js';
+import {
+  AuthenticationDetails,
+  CognitoUser,
+  CognitoUserPool,
+  CognitoUserSession
+} from 'amazon-cognito-identity-js';
+import { Observer } from 'rxjs/Observer';
 
 const POOL_DATA = {
-  UserPoolId: 'us-east-2_pY8mZ04uC',
-  ClientId: '3k23fenps45v5pdj3ojkohvujn'
+  UserPoolId: 'us-east-2_HiGIW53Kp',
+  ClientId: '4be4epattcj2vkhpbp7es2q7oe'
 };
 const poolData = new CognitoUserPool(POOL_DATA);
 
@@ -24,15 +30,38 @@ export class UserService {
   usuarioRegistrado: CognitoUser;
 
   constructor(private _http: HttpClient, router: Router) {}
-  logout() {
-    this._loginSubject$.next(AuthState.Logout);
+
+  login({ username, password }) {
+    console.log('username', username, 'pass', password);
+    this.authIsLoading$.next(true);
+    const loginData = {
+      Username: username,
+      Password: password
+    };
+    const loginDetails = new AuthenticationDetails(loginData);
+    const userData = {
+      Username: username,
+      Pool: poolData
+    };
+    const cognitoUser = new CognitoUser(userData);
+    cognitoUser.authenticateUser(loginDetails, {
+      onSuccess: (result: CognitoUserSession) => {
+        console.log(result);
+        this._loginSubject$.next(AuthState.Login);
+        this.authIsLoading$.next(false);
+        this.authDidFail$.next(false);
+      },
+      onFailure: err => {
+        console.log(err);
+        this._loginSubject$.next(AuthState.Logout);
+        this.authIsLoading$.next(false);
+        this.authDidFail$.next(true);
+        return;
+      }
+    });
   }
 
-  login() {
-    this._loginSubject$.next(AuthState.Login);
-  }
-
-  registrarse({ username, password }) {
+  registrarse({ username, passGroup: { password: password } }) {
     this.authIsLoading$.next(true);
     poolData.signUp(username, password, null, null, (error, result) => {
       if (error) {
@@ -43,7 +72,6 @@ export class UserService {
       this.authDidFail$.next(false);
       this.authIsLoading$.next(false);
       this.usuarioRegistrado = result.user;
-      console.log('usuario-registrado', this.usuarioRegistrado);
     });
   }
 
@@ -64,5 +92,43 @@ export class UserService {
       this.authIsLoading$.next(false);
       console.log('conf-result', result);
     });
+  }
+
+  getAuthenticatedUser() {
+    return poolData.getCurrentUser();
+  }
+
+  isAuthenticated(): Observable<AuthState> {
+    const user = this.getAuthenticatedUser();
+    if (!user) {
+      this._loginSubject$.next(AuthState.Logout);
+    } else {
+      user.getSession((err, session) => {
+        if (err) {
+          this._loginSubject$.next(AuthState.Logout);
+        } else {
+          if (session.isValid()) {
+            this._loginSubject$.next(AuthState.Login);
+          } else {
+            this._loginSubject$.next(AuthState.Logout);
+          }
+        }
+      });
+    }
+    return this.isLogin$;
+  }
+
+  logout() {
+    this.isAuthenticated().subscribe(
+      next => {
+        if (next === AuthState.Logout) {
+          return;
+        } else {
+          this.getAuthenticatedUser().signOut();
+          this._loginSubject$.next(AuthState.Logout);
+        }
+      },
+      err => this._loginSubject$.next(AuthState.Logout)
+    );
   }
 }

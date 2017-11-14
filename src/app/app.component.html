@@ -1,14 +1,15 @@
 <div class="flex-column space100vh">
   <mat-toolbar color="primary">
-    <a routerLink="/">
+    <a routerLink="/inicio">
       <div class="icono">
         <img src="assets/img/laliga-h-negativo-300x300_v2.png">
       </div>
     </a>
     <div class="botones-login">
-      <a mat-button *ngIf="(isLogin$ | async) === 'LOGOUT'; else registerTmpl"
-         routerLink="login">Ingresar</a>
-      <a mat-button routerLink="register">registrarse</a>
+      <a mat-button *ngIf="(isLogin$ | async) === 'LOGOUT'"
+         routerLink="/login">Ingresar</a>
+      <a mat-button *ngIf="(isLogin$ | async) === 'LOGOUT'" routerLink="/registrar">registrarse</a>
+      <a mat-button *ngIf="(isLogin$ | async) === 'LOGIN'" (click)="logout()" >Salir</a>
     </div>
     <span class="spacer"></span>
     <span>Pronosticos</span>
@@ -22,6 +23,3 @@
     </div>
   </mat-toolbar>
 </div>
-<ng-template #registerTmpl>
-  <a mat-button (click)="logout()" >Salir</a>
-</ng-template>

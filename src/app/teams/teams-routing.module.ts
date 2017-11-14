@@ -4,7 +4,7 @@ import { TeamDetailComponent } from './team-detail/team-detail.component';
 
 const routes: Routes = [
   { path: '', component: TeamDetailComponent },
-  { path: '**', redirectTo: '/inicio'},
+  { path: '**', redirectTo: '/inicio' }
 ];
 
 @NgModule({

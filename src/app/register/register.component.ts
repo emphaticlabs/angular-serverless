@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { equalValidator } from '../custom-validators/custome.validators';
+import { UserService } from '../user.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -11,7 +12,8 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 })
 export class RegisterComponent implements OnInit {
   registerForm: FormGroup;
-  constructor(private fb: FormBuilder) {
+  // passGroup: FormGroup;
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.createFormulario();
   }
 
@@ -30,7 +32,9 @@ export class RegisterComponent implements OnInit {
     });
   }
 
-  onSubmit() {}
+  onSubmit() {
+    this.userService.registrarse(this.registerForm.value);
+  }
 
   reset() {
     this.registerForm.reset();

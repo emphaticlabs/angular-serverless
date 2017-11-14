@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from '../user.service';
 
 const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/;
 
@@ -11,7 +12,7 @@ const EMAIL_REGEX = /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder, private userService: UserService) {
     this.crearFormulario();
   }
 
@@ -19,13 +20,14 @@ export class LoginComponent implements OnInit {
 
   private crearFormulario() {
     this.loginForm = this.fb.group({
-      usuario: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
-      password: ['', Validators.required]
+      username: ['', [Validators.required, Validators.pattern(EMAIL_REGEX)]],
+      password: ['', [Validators.required, Validators.minLength(8)]]
     });
   }
 
-  login() {
-    console.log('login', this.loginForm.value);
+  onSubmit() {
+    this.userService.login(this.loginForm.value);
+    this.loginForm.reset();
   }
 
   reset() {
