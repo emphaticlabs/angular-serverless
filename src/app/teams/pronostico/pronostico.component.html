@@ -1,0 +1,27 @@
+<div class="wrapper" *ngIf="fixture$ | async">
+  <div class="container">
+    <div class="row1">
+      <span class="jornada">Jornada # {{ fixtureData?.matchday }}</span>
+      <span class="fecha">{{ fixtureData?.date | date: 'short': '-0600' : 'es-GT' }}</span>
+    </div>
+    <div class="row2">
+      <div class="col1">
+        <span class="center-cont-hor"><mat-icon>add_box</mat-icon></span>
+        <span class="center-cont-hor"><mat-icon>indeterminate_check_box</mat-icon></span>
+      </div>
+      <div class="col2">{{ fixtureData?.homeTeamName}}</div>
+      <div class="col3 center-cont-hor">
+        <div class="score-numbers">{{homeTeamScore}}</div>
+      </div>
+      <div class="col4 center-cont-hor">
+        <div class="score-numbers">{{awayTeamScore}}</div>
+      </div>
+      <div class="col5">{{fixtureData?.awayTeamName}}</div>
+      <div class="col6">
+        <span class="center-cont-hor"><mat-icon>add_box</mat-icon></span>
+        <span class="center-cont-hor"><mat-icon>indeterminate_check_box</mat-icon></span>
+      </div>
+    </div>
+  </div>
+  <!--<pre>{{ fixtureData | json }}</pre>-->
+</div>

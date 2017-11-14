@@ -9,4 +9,5 @@ export const environment = {
   ligaTableUrl: 'http://api.football-data.org/v1/competitions/455/leagueTable',
   teamByIdUrl: 'http://api.football-data.org/v1/teams/',
   getFixturesByIdUrl: 'http://api.football-data.org/v1/teams/',
+  getFixtureByIdUrl: 'http://api.football-data.org/v1/fixtures/'
 };

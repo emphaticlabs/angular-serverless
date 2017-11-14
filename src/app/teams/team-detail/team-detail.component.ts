@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap, Params } from '@angular/router';
+import { ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {
   Fixture,

@@ -13,12 +13,14 @@ import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/operator/map';
 import 'rxjs/add/observable/from';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
+import { Fix } from 'tslint';
 
 @Injectable()
 export class LigaService {
   ligaTableUrl: string;
   teamByIdUrl: string;
   getFixturesByIdUrl: string;
+  getFixtureByIdUrl: string;
   _tableDataSubject$: BehaviorSubject<LigaTable | null> = new BehaviorSubject<
     LigaTable
   >(null);
@@ -31,12 +33,17 @@ export class LigaService {
   private _loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject(
     false
   );
+  // get one fixture CURRENT from id subject and observable
+  private _currentFixture$ = new BehaviorSubject<any | null>(null);
+  currentFixture$: Observable<any> = this._currentFixture$.asObservable();
+
   loading$ = this._loadingSubject.asObservable();
 
   constructor(private http: HttpClient) {
     this.ligaTableUrl = environment.ligaTableUrl;
     this.teamByIdUrl = environment.teamByIdUrl;
     this.getFixturesByIdUrl = environment.getFixturesByIdUrl;
+    this.getFixtureByIdUrl = environment.getFixtureByIdUrl;
     // get the Table data for first time
     this.getTable();
     this.getLaLigaFixturesByTI('81');
@@ -49,6 +56,10 @@ export class LigaService {
 
   getTeamById(id: string): Observable<LigaTeam> {
     return this.http.get<LigaTeam>(this.teamByIdUrl + id).shareReplay();
+  }
+
+  getFixtureById(id: string): Observable<any> {
+    return this.http.get<any>(this.getFixtureByIdUrl + id).shareReplay();
   }
 
   getFixturesByTeamId(id: string) {
