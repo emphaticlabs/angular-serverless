@@ -1,69 +1,100 @@
+$primaryColor : #3f51b5;
+$secundaryColor : #c40560;
+$borderBasico : 0.5px solid $primaryColor;
 .wrapper {
   display         : flex;
   flex-direction  : column;
   width           : 100%;
   height          : 100vh;
-  justify-content : center;
+  justify-content : flex-start;
   align-items     : center;
+  .vertical-spacer {
+    height : 200px;
+  }
   .container {
+    margin-bottom: 100px;
     width : 80%;
-    * {
-      border: 1px solid #909090;
-    }
+  }
+  .submit {
+    display: flex;
+    align-items: center;
   }
 }
 .row1 {
-  display        : flex;
-  flex-direction : row;
-  flex           : 1;
+  display          : flex;
+  flex-direction   : row;
+  flex             : 1;
+  background-color : $primaryColor;
+  color            : #ffffff;
+  font-size        : 1.4rem;
+  border-radius    : 4px 4px 0 0;
   .jornada {
     flex : 1 1 50%;
   }
   .fecha {
     flex : 1 1 50%;
+    text-align: end;
   }
 }
 .row2 {
   display        : flex;
   flex-direction : row;
   flex           : 1;
-  .col1 {
-    display        : flex;
-    flex-direction : column;
-    width          : 10%;
-    span {
-      flex: 1;
+  .mat-icon {
+    color     : $primaryColor;
+    font-size : 2rem;
+    width     : auto;
+    height    : auto;
+  }
+  .col1, .col6 {
+    display            : flex;
+    flex-direction     : column;
+    justify-content    : space-between;
+    align-items        : center;
+    width              : 10%;
+    border             : $borderBasico;
+    button {
+      flex : 1;
     }
   }
-  .col2 {
-    width   : 30%;
-    display : flex;
+  .col2, .col5 {
+    width           : 30%;
+    display         : flex;
+    justify-content : center;
+    align-items     : center;
+    font-size       : 1.6rem;
+    color           : $primaryColor;
+    border          : $borderBasico;
   }
-  .col3 {
-    width : 10%;
-  }
-  .col4 {
-    width : 10%;
-  }
-  .col5 {
-    width   : 30%;
-    display : flex;
-  }
-  .col6 {
-    display: flex;
-    flex-direction: column;
-    width : 10%;
-    span {
-      flex: 1;
-    }
+  .col3, .col4 {
+    width  : 10%;
+    border : $borderBasico;
   }
 }
 .center-cont-hor {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  display         : flex;
+  justify-content : center;
+  align-items     : center;
+}
+.score-numbers {
+  font-size   : 4rem;
+  color       : $secundaryColor;
+  font-weight : 600;
 }
 
-.score-numbers {
-  font-size: 4rem;
+@media screen and (max-width: 700px) {
+  .container {
+    width: 90%;
+    .col2, .col5 {
+      font-size: 1.1rem;
+    }
+  }
+  .row1 {
+    font-size: .9rem;
+  }
+
+  .score-numbers {
+    font-size: 2rem;
+    font-weight: 400;
+  }
 }

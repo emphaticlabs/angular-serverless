@@ -46,7 +46,7 @@ export class LigaService {
     this.getFixtureByIdUrl = environment.getFixtureByIdUrl;
     // get the Table data for first time
     this.getTable();
-    this.getLaLigaFixturesByTI('81');
+    // this.getLaLigaFixturesByTI('81');
   }
 
   getTable(): Observable<LigaTable> {

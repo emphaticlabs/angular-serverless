@@ -1,13 +1,18 @@
-<div class="wrapper" *ngIf="fixture$ | async">
+<div class="wrapper" *ngIf="fixtureData">
+  <div class="vertical-spacer"></div>
   <div class="container">
     <div class="row1">
       <span class="jornada">Jornada # {{ fixtureData?.matchday }}</span>
-      <span class="fecha">{{ fixtureData?.date | date: 'short': '-0600' : 'es-GT' }}</span>
+      <span class="fecha">{{ fixtureData?.date | date: 'medium' : '-0600' : 'es-GT' }}</span>
     </div>
     <div class="row2">
       <div class="col1">
-        <span class="center-cont-hor"><mat-icon>add_box</mat-icon></span>
-        <span class="center-cont-hor"><mat-icon>indeterminate_check_box</mat-icon></span>
+        <button mat-icon-button (click)="clickCounter('HOME', 'SUMA')" class="center-cont-hor">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button (click)="clickCounter('HOME', 'RESTA')" class="center-cont-hor">
+          <mat-icon>indeterminate_check_box</mat-icon>
+        </button>
       </div>
       <div class="col2">{{ fixtureData?.homeTeamName}}</div>
       <div class="col3 center-cont-hor">
@@ -18,10 +23,17 @@
       </div>
       <div class="col5">{{fixtureData?.awayTeamName}}</div>
       <div class="col6">
-        <span class="center-cont-hor"><mat-icon>add_box</mat-icon></span>
-        <span class="center-cont-hor"><mat-icon>indeterminate_check_box</mat-icon></span>
+        <button mat-icon-button (click)="clickCounter('AWAY', 'SUMA')" class="center-cont-hor">
+          <mat-icon>add_box</mat-icon>
+        </button>
+        <button mat-icon-button (click)="clickCounter('AWAY', 'RESTA')" class="center-cont-hor">
+          <mat-icon>indeterminate_check_box</mat-icon>
+        </button>
       </div>
     </div>
+  </div>
+  <div class="submit">
+    <button color="accent" mat-raised-button>Enviar Pronostico</button>
   </div>
   <!--<pre>{{ fixtureData | json }}</pre>-->
 </div>

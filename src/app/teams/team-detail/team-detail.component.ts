@@ -14,6 +14,8 @@ import 'rxjs/add/operator/switchMap';
 import { registerLocaleData } from '@angular/common';
 import localeEsGT from '@angular/common/locales/es-GT';
 
+// utility functs
+import {getLastSlashValue} from '../../utility-functions/process-href-strings';
 // register locale
 
 registerLocaleData(localeEsGT);
@@ -71,6 +73,6 @@ export class TeamDetailComponent implements OnInit {
     return output.vsTeam;
   }
   getFixtureId(href: string): string {
-    return href.split('/').pop();
+    return getLastSlashValue(href);
   }
 }
