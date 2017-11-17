@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LigaService } from '../../tabla.service';
+import { v4 as uuid } from 'uuid';
 import { Fixture } from '../../interfaces/table.interface';
 import { getLastSlashValue } from '../../utility-functions/process-href-strings';
 
@@ -44,7 +45,7 @@ export class PronosticoComponent implements OnInit {
     }, err => (this.fixtureData = null));
   }
 
-  buildMyDataObj(): FixtureBet | null {
+  buildSubmitDataObj(): FixtureBet | null {
     if (this.fixtureData.date) {
       const fixtureObj = {};
       const teams = {
@@ -61,6 +62,7 @@ export class PronosticoComponent implements OnInit {
       };
       const returnObj = Object.assign(
         fixtureObj,
+        { pronosticoId: uuid() },
         {
           fixtureId: +getLastSlashValue(this.fixtureData._links.self.href)
         },
@@ -70,7 +72,7 @@ export class PronosticoComponent implements OnInit {
           timeStamp: new Date().toISOString()
         }
       );
-      console.log('dataPost', JSON.stringify(fixtureObj, null, 2));
+      // console.log('dataPost', JSON.stringify(fixtureObj, null, 2));
       return returnObj;
     } else {
       return null;
@@ -96,5 +98,8 @@ export class PronosticoComponent implements OnInit {
 
     this.homeTeamScore = hts;
     this.awayTeamScore = ats;
+  }
+  submitBet() {
+    console.log('submit-data', this.buildSubmitDataObj());
   }
 }

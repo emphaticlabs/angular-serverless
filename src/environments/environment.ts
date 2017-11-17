@@ -9,5 +9,13 @@ export const environment = {
   ligaTableUrl: 'http://api.football-data.org/v1/competitions/455/leagueTable',
   teamByIdUrl: 'http://api.football-data.org/v1/teams/',
   getFixturesByIdUrl: 'http://api.football-data.org/v1/teams/',
-  getFixtureByIdUrl: 'http://api.football-data.org/v1/fixtures/'
+  getFixtureByIdUrl: 'http://api.football-data.org/v1/fixtures/',
+  cognito : {
+    region: 'us-east-2',
+    POO_DATA : {
+      UserPoolId: 'us-east-2_HiGIW53Kp',
+      ClientId: '4be4epattcj2vkhpbp7es2q7oe'
+    }
+
+  }
 };

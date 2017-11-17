@@ -10,12 +10,14 @@ import { LigaService } from '../../tabla.service';
 import { FixtureDatasource } from './fixture.datasource';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
+import 'rxjs/add/observable/of';
 import { registerLocaleData } from '@angular/common';
 import localeEsGT from '@angular/common/locales/es-GT';
 
 // utility functs
-import {getLastSlashValue} from '../../utility-functions/process-href-strings';
+import { getLastSlashValue } from '../../utility-functions/process-href-strings';
 // register locale
 
 registerLocaleData(localeEsGT);
@@ -32,7 +34,7 @@ export class TeamDetailComponent implements OnInit {
   ligaTeam$: Observable<LigaTeam | null> = this._ligaTeamSubject$.asObservable();
   teamFixtures$: Observable<TeamFixtures>;
   teamFixtureArr: Observable<Fixture[]>;
-  dataSource: FixtureDatasource | null;
+  dataSource: FixtureDatasource;
   displayedColumns = ['jornada', 'columna', 'versus', 'pronostico'];
 
   constructor(
@@ -42,11 +44,14 @@ export class TeamDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap
+      .do((params: ParamMap) => console.log('team-id', params.get('id')))
       .switchMap((params: ParamMap) =>
         this.ligaService.getTeamById(params.get('id'))
       )
       .subscribe(
-        data => this._ligaTeamSubject$.next(data),
+        (data: LigaTeam) => {
+          this._ligaTeamSubject$.next(data);
+        },
         err => {
           this._ligaTeamSubject$.next(null);
           console.log('error: ', err.message);
@@ -56,9 +61,15 @@ export class TeamDetailComponent implements OnInit {
       .switchMap((params: ParamMap) =>
         this.ligaService.getFixturesByTeamId(params.get('id'))
       )
-      .subscribe(data => {
+      .subscribe((data: TeamFixtures) => {
+        let filteredFixtures: Fixture[] | any[] = [];
+        if (data['fixtures'] && data['fixtures'].length > 0 ) {
+           filteredFixtures = data['fixtures'].filter(
+            fix => fix['_links'].competition.href.split('/').pop() === '455'
+          );
+        }
         this.dataSource = new FixtureDatasource(
-          this.ligaService._fixturesFilterSubject$
+          Observable.of(filteredFixtures)
         );
       });
   }

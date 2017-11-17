@@ -30,6 +30,8 @@ export class LigaService {
     Fixture[] | null
   > = new BehaviorSubject<Fixture[]>(null);
 
+  fixturesFiltered$ = this._fixturesFilterSubject$.asObservable();
+
   private _loadingSubject: BehaviorSubject<boolean> = new BehaviorSubject(
     false
   );
@@ -71,16 +73,16 @@ export class LigaService {
   }
 
   getLaLigaFixturesByTI(id: string) {
-    return (
-      this.getFixturesByTeamId(id)
-        .pluck('fixtures')
-        // .switchMap((fix: Fixture[]) => Observable.from(fix));
-        .subscribe((fixtures: Fixture[]) => {
+    return this.getFixturesByTeamId(id)
+      .pluck('fixtures')
+      .subscribe(
+        (fixtures: Fixture[]) => {
           const filteredArr = fixtures.filter(
             fix => fix['_links'].competition.href.split('/').pop() === '455'
           );
           this._fixturesFilterSubject$.next(filteredArr);
-        })
-    );
+        },
+        err => this._fixturesFilterSubject$.next([])
+      );
   }
 }
