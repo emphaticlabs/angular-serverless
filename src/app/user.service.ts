@@ -28,7 +28,7 @@ export class UserService {
   authStatusChanged$ = new Subject<boolean>();
   usuarioRegistrado: CognitoUser;
 
-  constructor(private _http: HttpClient, router: Router) {}
+  constructor(private _http: HttpClient, private router: Router) {}
 
   getUserPool() {
     return new CognitoUserPool(UserService.POOL_DATA);
@@ -49,10 +49,10 @@ export class UserService {
     const cognitoUser = new CognitoUser(userData);
     cognitoUser.authenticateUser(loginDetails, {
       onSuccess: (result: CognitoUserSession) => {
-        console.log(result);
         this._loginSubject$.next(AuthState.Login);
         this.authIsLoading$.next(false);
         this.authDidFail$.next(false);
+        this.router.navigateByUrl('/');
       },
       onFailure: err => {
         console.log(err);
@@ -146,7 +146,7 @@ export class UserService {
     if (this.getAuthenticatedUser() != null) {
       this.getAuthenticatedUser().getSession((err, session) => {
         if (err) {
-          console.log('Can\'t set credentials: ' + err);
+          console.log("Can't set credentials: " + err);
           accessToken = null;
         } else {
           if (session.isValid()) {
@@ -163,7 +163,7 @@ export class UserService {
     if (this.getAuthenticatedUser() != null) {
       this.getAuthenticatedUser().getSession((err, session) => {
         if (err) {
-          console.log('Can\'t set credentials: ' + err);
+          console.log("Can't set credentials: " + err);
           accessToken = null;
         } else {
           if (session.isValid()) {
@@ -180,7 +180,7 @@ export class UserService {
     if (this.getAuthenticatedUser() != null) {
       this.getAuthenticatedUser().getSession((err, session) => {
         if (err) {
-          console.log('Can\'t set credentials: ' + err);
+          console.log("Can't set credentials: " + err);
           accessToken = null;
         } else {
           if (session.isValid()) {

@@ -1,5 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import {
+  ActivatedRoute,
+  GuardsCheckEnd,
+  ParamMap,
+  Router,
+  RouterEvent
+} from '@angular/router';
 import { Observable } from 'rxjs/Observable';
 import {
   Fixture,
@@ -9,7 +15,7 @@ import {
 import { LigaService } from '../../tabla.service';
 import { FixtureDatasource } from './fixture.datasource';
 import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/filter';
 import 'rxjs/add/operator/do';
 import 'rxjs/add/operator/switchMap';
 import 'rxjs/add/observable/of';
@@ -39,8 +45,19 @@ export class TeamDetailComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private ligaService: LigaService
-  ) {}
+    private ligaService: LigaService,
+    private router: Router
+  ) {
+    router.events
+      .filter((e: RouterEvent) => e instanceof GuardsCheckEnd)
+      .subscribe((result: GuardsCheckEnd) => {
+        if (!result.shouldActivate) {
+          router
+            .navigateByUrl('/login')
+            .then(succes => console.log('redirected to login'));
+        }
+      });
+  }
 
   ngOnInit(): void {
     this.route.paramMap
@@ -63,8 +80,8 @@ export class TeamDetailComponent implements OnInit {
       )
       .subscribe((data: TeamFixtures) => {
         let filteredFixtures: Fixture[] | any[] = [];
-        if (data['fixtures'] && data['fixtures'].length > 0 ) {
-           filteredFixtures = data['fixtures'].filter(
+        if (data['fixtures'] && data['fixtures'].length > 0) {
+          filteredFixtures = data['fixtures'].filter(
             fix => fix['_links'].competition.href.split('/').pop() === '455'
           );
         }

@@ -13,9 +13,15 @@ import { UserService } from './user.service';
 import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
+import { PronosticosGuard } from './guards/pronosticos-guard';
 
 @NgModule({
-  declarations: [AppComponent, TablaPosComponent, LoginComponent, RegisterComponent],
+  declarations: [
+    AppComponent,
+    TablaPosComponent,
+    LoginComponent,
+    RegisterComponent
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -32,6 +38,7 @@ import { RegisterComponent } from './register/register.component';
       useClass: LaLigaAuthInterceptor,
       multi: true
     },
+    PronosticosGuard
   ],
   bootstrap: [AppComponent]
 })

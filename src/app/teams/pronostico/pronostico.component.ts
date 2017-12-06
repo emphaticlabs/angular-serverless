@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { LigaService } from '../../tabla.service';
 import { v4 as uuid } from 'uuid';
-import { Fixture } from '../../interfaces/table.interface';
+// import { Fixture } from '../../interfaces/table.interface';
 import { getLastSlashValue } from '../../utility-functions/process-href-strings';
 
 // locals
@@ -13,8 +13,9 @@ import localeEsGT from '@angular/common/locales/es-GT';
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/shareReplay';
+
 import { FixtureBet } from '../../interfaces/bet.interfaces';
-import { Operation, Team } from '../../enums/click-counter.enums';
+// import { Operation, Team } from '../../enums/click-counter.enums';
 
 // declaring locale
 registerLocaleData(localeEsGT);
