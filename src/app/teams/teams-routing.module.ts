@@ -3,6 +3,7 @@ import { Routes, RouterModule } from '@angular/router';
 import { TeamDetailComponent } from './team-detail/team-detail.component';
 import { PronosticoComponent } from './pronostico/pronostico.component';
 import { PronosticosGuard } from '../guards/pronosticos-guard';
+import {PronosticosListComponent} from './pronosticos-list/pronosticos-list.component';
 
 const routes: Routes = [
   { path: '', component: TeamDetailComponent },
@@ -10,6 +11,10 @@ const routes: Routes = [
     path: 'quiniela/:id',
     component: PronosticoComponent,
     canActivate: [PronosticosGuard]
+  },
+  {
+    path: 'pronosticos',
+    component: PronosticosListComponent
   },
   { path: '**', redirectTo: '/inicio' }
 ];
