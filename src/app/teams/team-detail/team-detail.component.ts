@@ -61,7 +61,6 @@ export class TeamDetailComponent implements OnInit {
 
   ngOnInit(): void {
     this.route.paramMap
-      .do((params: ParamMap) => console.log('team-id', params.get('id')))
       .switchMap((params: ParamMap) =>
         this.ligaService.getTeamById(params.get('id'))
       )

@@ -10,12 +10,13 @@ export const environment = {
   teamByIdUrl: 'http://api.football-data.org/v1/teams/',
   getFixturesByIdUrl: 'http://api.football-data.org/v1/teams/',
   getFixtureByIdUrl: 'http://api.football-data.org/v1/fixtures/',
-  cognito : {
+  cognito: {
     region: 'us-east-2',
-    POO_DATA : {
+    POO_DATA: {
       UserPoolId: 'us-east-2_HiGIW53Kp',
       ClientId: '4be4epattcj2vkhpbp7es2q7oe'
     }
-
-  }
+  },
+  api_gateway_url:
+    'https://rwdshfq6ej.execute-api.us-east-2.amazonaws.com/dev/pronosticos'
 };

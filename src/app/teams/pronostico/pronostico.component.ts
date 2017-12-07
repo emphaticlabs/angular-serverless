@@ -1,7 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { LigaService } from '../../tabla.service';
 import { v4 as uuid } from 'uuid';
+
+// services
+import { LigaService } from '../../tabla.service';
+import { PronosticosService } from '../pronosticos.service';
+
 // import { Fixture } from '../../interfaces/table.interface';
 import { getLastSlashValue } from '../../utility-functions/process-href-strings';
 
@@ -9,16 +13,18 @@ import { getLastSlashValue } from '../../utility-functions/process-href-strings'
 import { registerLocaleData } from '@angular/common';
 import localeEsGT from '@angular/common/locales/es-GT';
 
-// rxjs operators
+// rxjs classes and operators
 import 'rxjs/add/operator/switchMap';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/shareReplay';
 
+// interfaces
 import { FixtureBet } from '../../interfaces/bet.interfaces';
 // import { Operation, Team } from '../../enums/click-counter.enums';
 
 // declaring locale
 registerLocaleData(localeEsGT);
+
 @Component({
   selector: 'liga-pronostico',
   templateUrl: './pronostico.component.html',
@@ -31,7 +37,8 @@ export class PronosticoComponent implements OnInit {
   awayTeamScore = 0;
   constructor(
     private route: ActivatedRoute,
-    private ligaService: LigaService
+    private ligaService: LigaService,
+    private pronosticosService: PronosticosService
   ) {}
 
   ngOnInit() {
@@ -101,6 +108,10 @@ export class PronosticoComponent implements OnInit {
     this.awayTeamScore = ats;
   }
   submitBet() {
-    console.log('submit-data', this.buildSubmitDataObj());
+    if (this.buildSubmitDataObj()) {
+      this.pronosticosService
+        .postPronostico(this.buildSubmitDataObj())
+    }
+    console.log('please reload page');
   }
 }

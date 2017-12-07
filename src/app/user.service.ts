@@ -35,7 +35,6 @@ export class UserService {
   }
 
   login({ username, password }) {
-    console.log('username', username, 'pass', password);
     this.authIsLoading$.next(true);
     const loginData = {
       Username: username,
