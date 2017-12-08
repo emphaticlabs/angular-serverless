@@ -4,7 +4,7 @@ import { v4 as uuid } from 'uuid';
 
 // services
 import { LigaService } from '../../tabla.service';
-import { PronosticosService } from '../pronosticos.service';
+import { PronosticosService } from '../../share/pronosticos.service';
 
 // import { Fixture } from '../../interfaces/table.interface';
 import { getLastSlashValue } from '../../utility-functions/process-href-strings';

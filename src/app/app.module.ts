@@ -14,13 +14,16 @@ import { LoginComponent } from './login/login.component';
 import { ReactiveFormsModule } from '@angular/forms';
 import { RegisterComponent } from './register/register.component';
 import { PronosticosGuard } from './guards/pronosticos-guard';
+import { PronosticosListComponent } from './pronosticos-list/pronosticos-list.component';
+import { ShareModule } from './share/share.module';
 
 @NgModule({
   declarations: [
     AppComponent,
     TablaPosComponent,
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    PronosticosListComponent
   ],
   imports: [
     BrowserModule,
@@ -28,7 +31,8 @@ import { PronosticosGuard } from './guards/pronosticos-guard';
     HttpClientModule,
     BrowserAnimationsModule,
     MaterialComponentsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ShareModule.forRoot()
   ],
   providers: [
     LigaService,
