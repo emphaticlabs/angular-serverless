@@ -5,21 +5,21 @@ import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 import { AuthState } from './enums/user.enums';
 import { Subject } from 'rxjs/Subject';
 import { Router } from '@angular/router';
-import { User } from './interfaces/user.model';
-import { environment } from '../environments/environment';
 import {
   AuthenticationDetails,
   CognitoUser,
   CognitoUserPool,
   CognitoUserSession
 } from 'amazon-cognito-identity-js';
-
-import { Observer } from 'rxjs/Observer';
+import * as AWS from 'aws-sdk/global';
+import * as CognitoIdentity from 'aws-sdk/clients/cognitoidentity';
+import * as awsservice from 'aws-sdk/lib/service';
+import { environment } from '../environments/environment';
 
 @Injectable()
 export class UserService {
   public static REGION = environment.cognito.region;
-  public static POOL_DATA = environment.cognito.POO_DATA;
+  public static POOL_DATA = environment.cognito.POOL_DATA;
 
   private _loginSubject$ = new BehaviorSubject<AuthState>(AuthState.Logout);
   isLogin$: Observable<AuthState> = this._loginSubject$.asObservable();
@@ -27,11 +27,37 @@ export class UserService {
   authDidFail$ = new BehaviorSubject<boolean>(false);
   authStatusChanged$ = new Subject<boolean>();
   usuarioRegistrado: CognitoUser;
+  loginUrl = `cognito-idp.${UserService.REGION.toLowerCase()}.amazonaws.com/${
+    UserService.POOL_DATA.UserPoolId
+  }`;
+  public cognitoCreds: AWS.CognitoIdentityCredentials;
 
   constructor(private _http: HttpClient, private router: Router) {}
 
   getUserPool() {
     return new CognitoUserPool(UserService.POOL_DATA);
+  }
+
+  setCognitoCreds(creds: AWS.CognitoIdentityCredentials) {
+    return this.getUserPool().getCurrentUser();
+  }
+
+  getCognitoCreds() {
+    return this.cognitoCreds;
+  }
+
+  buildCognitoCreds(idTokenJwt: string) {
+    const url = this.loginUrl;
+    const logins: CognitoIdentity.LoginsMap = {};
+    logins[url] = idTokenJwt;
+    const params = {
+      IdentityPoolId: UserService.POOL_DATA.UserPoolId,
+      Logins: logins
+    };
+    const serviceConfigs: awsservice.ServiceConfigurationOptions = {};
+    const creds = new AWS.CognitoIdentityCredentials(params, serviceConfigs);
+    this.setCognitoCreds(creds);
+    return creds;
   }
 
   login({ username, password }) {
@@ -48,10 +74,14 @@ export class UserService {
     const cognitoUser = new CognitoUser(userData);
     cognitoUser.authenticateUser(loginDetails, {
       onSuccess: (result: CognitoUserSession) => {
+        console.log('id token ', result.getIdToken().getJwtToken());
+        AWS.config.credentials = this.buildCognitoCreds(
+          result.getIdToken().getJwtToken()
+        );
         this._loginSubject$.next(AuthState.Login);
         this.authIsLoading$.next(false);
         this.authDidFail$.next(false);
-        this.router.navigateByUrl('/');
+        this.router.navigateByUrl('/').then(ok => undefined);
       },
       onFailure: err => {
         console.log(err);
@@ -132,8 +162,8 @@ export class UserService {
         if (next === AuthState.Logout) {
           return;
         } else {
-          this.getAuthenticatedUser().signOut();
           this._loginSubject$.next(AuthState.Logout);
+          this.getAuthenticatedUser().signOut();
         }
       },
       err => this._loginSubject$.next(AuthState.Logout)

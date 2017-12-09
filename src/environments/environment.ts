@@ -11,8 +11,8 @@ export const environment = {
   getFixturesByIdUrl: 'http://api.football-data.org/v1/teams/',
   getFixtureByIdUrl: 'http://api.football-data.org/v1/fixtures/',
   cognito: {
-    region: 'us-east-2',
-    POO_DATA: {
+    region   : 'us-east-2',
+    POOL_DATA: {
       UserPoolId: 'us-east-2_HiGIW53Kp',
       ClientId: '4be4epattcj2vkhpbp7es2q7oe'
     }
